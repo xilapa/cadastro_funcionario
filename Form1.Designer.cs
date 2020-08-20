@@ -37,14 +37,14 @@
             this.txtbx_matricula = new System.Windows.Forms.TextBox();
             this.txtbx_cpf = new System.Windows.Forms.TextBox();
             this.txtbx_nome = new System.Windows.Forms.TextBox();
-            this.txtbx_dn = new System.Windows.Forms.TextBox();
             this.txtbx_endereco = new System.Windows.Forms.TextBox();
             this.btn_limpar = new System.Windows.Forms.Button();
             this.btn_excluir = new System.Windows.Forms.Button();
             this.btn_salvar = new System.Windows.Forms.Button();
             this.btn_pesquisar = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dataGridViewFuncionarios = new System.Windows.Forms.DataGridView();
+            this.txtbx_dn = new System.Windows.Forms.MaskedTextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFuncionarios)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_main
@@ -129,13 +129,6 @@
             this.txtbx_nome.Size = new System.Drawing.Size(425, 23);
             this.txtbx_nome.TabIndex = 2;
             // 
-            // txtbx_dn
-            // 
-            this.txtbx_dn.Location = new System.Drawing.Point(220, 194);
-            this.txtbx_dn.Name = "txtbx_dn";
-            this.txtbx_dn.Size = new System.Drawing.Size(100, 23);
-            this.txtbx_dn.TabIndex = 2;
-            // 
             // txtbx_endereco
             // 
             this.txtbx_endereco.Location = new System.Drawing.Point(220, 232);
@@ -151,6 +144,7 @@
             this.btn_limpar.TabIndex = 3;
             this.btn_limpar.Text = "Limpar";
             this.btn_limpar.UseVisualStyleBackColor = true;
+            this.btn_limpar.Click += new System.EventHandler(this.btn_limpar_Click);
             // 
             // btn_excluir
             // 
@@ -169,6 +163,7 @@
             this.btn_salvar.TabIndex = 3;
             this.btn_salvar.Text = "Salvar";
             this.btn_salvar.UseVisualStyleBackColor = true;
+            this.btn_salvar.Click += new System.EventHandler(this.btn_salvar_Click);
             // 
             // btn_pesquisar
             // 
@@ -180,26 +175,34 @@
             this.btn_pesquisar.UseVisualStyleBackColor = true;
             this.btn_pesquisar.Click += new System.EventHandler(this.btn_pesquisar_Click);
             // 
-            // dataGridView1
+            // dataGridViewFuncionarios
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(18, 275);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(764, 165);
-            this.dataGridView1.TabIndex = 0;
+            this.dataGridViewFuncionarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewFuncionarios.Location = new System.Drawing.Point(18, 275);
+            this.dataGridViewFuncionarios.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.dataGridViewFuncionarios.Name = "dataGridViewFuncionarios";
+            this.dataGridViewFuncionarios.Size = new System.Drawing.Size(764, 165);
+            this.dataGridViewFuncionarios.TabIndex = 0;
+            // 
+            // txtbx_dn
+            // 
+            this.txtbx_dn.Location = new System.Drawing.Point(220, 194);
+            this.txtbx_dn.Mask = "00/00/0000";
+            this.txtbx_dn.Name = "txtbx_dn";
+            this.txtbx_dn.Size = new System.Drawing.Size(100, 23);
+            this.txtbx_dn.TabIndex = 4;
             // 
             // cad_func
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtbx_dn);
             this.Controls.Add(this.btn_pesquisar);
             this.Controls.Add(this.btn_salvar);
             this.Controls.Add(this.btn_excluir);
             this.Controls.Add(this.btn_limpar);
             this.Controls.Add(this.txtbx_endereco);
-            this.Controls.Add(this.txtbx_dn);
             this.Controls.Add(this.txtbx_nome);
             this.Controls.Add(this.txtbx_cpf);
             this.Controls.Add(this.txtbx_matricula);
@@ -209,12 +212,14 @@
             this.Controls.Add(this.lbl_cpf);
             this.Controls.Add(this.lbl_matricula);
             this.Controls.Add(this.lbl_main);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridViewFuncionarios);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "cad_func";
-            this.Text = "Cadastro Funcionários";
-            //this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Text = "Cadastro de Funcionários";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFuncionarios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -231,13 +236,13 @@
         private System.Windows.Forms.TextBox txtbx_matricula;
         private System.Windows.Forms.TextBox txtbx_cpf;
         private System.Windows.Forms.TextBox txtbx_nome;
-        private System.Windows.Forms.TextBox txtbx_dn;
         private System.Windows.Forms.TextBox txtbx_endereco;
         private System.Windows.Forms.Button btn_limpar;
         private System.Windows.Forms.Button btn_excluir;
         private System.Windows.Forms.Button btn_salvar;
         private System.Windows.Forms.Button btn_pesquisar;
-        private System.Windows.Forms.DataGridView dataGridView1; //data grid
+        private System.Windows.Forms.DataGridView dataGridViewFuncionarios; //data grid
+        private System.Windows.Forms.MaskedTextBox txtbx_dn;
     }
 }
 

@@ -17,14 +17,34 @@ namespace cadastro_funcionario
             InitializeComponent();
         }
 
-        //private void Form1_Load(object sender, EventArgs e)
-        //{
-
-        //}
-
         private void btn_pesquisar_Click(object sender, EventArgs e)
         {
-            Pesquisar();
+            try
+            {
+                Pesquisar();
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+            
+        }
+
+        private void btn_salvar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Salvar();
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+        }
+
+        private void btn_limpar_Click(object sender, EventArgs e)
+        {
+            Limpar();
         }
 
         private void Pesquisar()
@@ -32,17 +52,53 @@ namespace cadastro_funcionario
             Funcionario funcionario = new Funcionario();
             
             int matricula = 0;
-            bool n = Int32.TryParse(txtbx_matricula.Text, out matricula);
+            Int32.TryParse(txtbx_matricula.Text, out matricula);
+            // valida se a matrícula esta vazia ou não
                         
             funcionario.Matricula = matricula;
             funcionario.Cpf = txtbx_cpf.Text;
             funcionario.Nome = txtbx_nome.Text;
             funcionario.DataNascimento = txtbx_dn.Text;
 
-            dataGridView1.DataSource = funcionario.Pesquisar();
+            dataGridViewFuncionarios.DataSource = funcionario.Pesquisar();
+        }
+
+        private void Salvar()
+        {
+            Funcionario funcionario = new Funcionario();
+
+            int matricula = 0;
+            Int32.TryParse(txtbx_matricula.Text, out matricula);
+            // valida se a matrícula esta vazia ou não
+
+            if ((String.IsNullOrEmpty(txtbx_cpf.Text)) || (String.IsNullOrEmpty(txtbx_nome.Text)) || (String.IsNullOrEmpty(txtbx_dn.Text)) || (String.IsNullOrEmpty(txtbx_endereco.Text)))
+            {
+                MessageBox.Show("Preencha todos os campos","Erro");
+                
+            }
+            else
+            {
+                funcionario.Matricula = matricula;
+                funcionario.Cpf = txtbx_cpf.Text;
+                funcionario.Nome = txtbx_nome.Text;
+                funcionario.DataNascimento = txtbx_dn.Text;
+                funcionario.Endereco = txtbx_endereco.Text;
+                funcionario.Salvar();
+            }
 
 
 
         }
+
+        private void Limpar()
+        {
+            txtbx_matricula.Text = "";
+            txtbx_cpf.Text = "";
+            txtbx_nome.Text = "";
+            txtbx_dn.Text = "";
+            txtbx_endereco.Text = "";
+        }
+
+
     }
 }
