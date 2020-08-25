@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.Crmf;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,22 +22,22 @@ namespace cadastro_funcionario
         private string mes { get; set; }
         private string ano { get; set; }
 
-        public void AddValues(ref MySqlCommand c)
-        // substituir os parâmetros da pesquisa de forma segura, impedindo ataques por SQL Injection
+        public void AddValues(ref MySqlCommand c, string _q)
+        // método para substituir os parâmetros da query de forma segura, impedindo ataques por SQL Injection
         {
-            if (Matricula != 0)
+            if ((Matricula != 0) && (_q.Contains("@matricula")))
             {
                 c.Parameters.AddWithValue("@matricula", Matricula);
             }
-            if (!Cpf.Equals(""))
+            if ((!Cpf.Equals("")) && (_q.Contains("@cpf")))
             {
                 c.Parameters.AddWithValue("@cpf", Cpf);
             }
-            if (!Nome.Equals(""))
+            if ((!Nome.Equals("")) && (_q.Contains("@nome")))
             {
                 c.Parameters.AddWithValue("@nome", Nome);
             }
-            if (!DataNascimento.Equals("  /  /"))
+            if ((!DataNascimento.Equals("  /  /")) && (_q.Contains("@data_nascimento")))
             {
                 //ajuste da data de nascimento para o padrão do MySQL
                 dia = DataNascimento.Substring(0, 2);
@@ -45,7 +46,7 @@ namespace cadastro_funcionario
                 DataNascimento = ano + "-" + mes + "-" + dia;
                 c.Parameters.AddWithValue("@data_nascimento", DataNascimento);
             }
-            if (!Endereco.Equals(""))
+            if ((!Endereco.Equals("")) && (_q.Contains("@endereco")))
             {
                 c.Parameters.AddWithValue("@endereco", Endereco);
             }
@@ -55,6 +56,7 @@ namespace cadastro_funcionario
         }
 
         private void RunQuery(string q)
+        // método criado para executar querys sem retorno de valores
         {
             try
             {
@@ -64,7 +66,7 @@ namespace cadastro_funcionario
 
                 conexaoBD.Open();
                 comandoBD.Prepare();
-                AddValues(ref comandoBD);
+                AddValues(ref comandoBD,q);
                 comandoBD.ExecuteNonQuery();
                 conexaoBD.Close();
             }
@@ -105,32 +107,35 @@ namespace cadastro_funcionario
                 MySqlConnection conexaoBD = new MySqlConnection(strConexaoBD);
                 // cria conexão com o BD
 
-                MySqlCommand comandoBD = new MySqlCommand(query.ToString(), conexaoBD);
+                MySqlCommand comandoBD_p = new MySqlCommand(query.ToString(), conexaoBD);
                 // o comando enviado ao BD requer a query e uma conexão com o BD
 
-                if (Matricula != 0)
-                {
-                    comandoBD.Parameters.AddWithValue("@matricula", Matricula);
-                }
-                if (!Cpf.Equals(""))
-                {
-                    comandoBD.Parameters.AddWithValue("@cpf", Cpf);
-                }
-                if (!Nome.Equals(""))
-                {
-                    comandoBD.Parameters.AddWithValue("@nome", Nome);
-                }
-                if (!DataNascimento.Equals("  /  /"))
-                {
-                    //ajuste da data de nascimento para o padrão do MySQL
-                    dia = DataNascimento.Substring(0, 2);
-                    mes = DataNascimento.Substring(3, 2);
-                    ano = DataNascimento.Substring(6, 4);
-                    DataNascimento = ano + "-" + mes + "-" + dia;
-                    comandoBD.Parameters.AddWithValue("@data_nascimento", DataNascimento);
-                }
+                AddValues(ref comandoBD_p, query.ToString());
 
-                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(comandoBD);
+                //if (Matricula != 0)
+                //{
+                //    comandoBD_p.Parameters.AddWithValue("@matricula", Matricula);
+                //}
+                //if (!Cpf.Equals(""))
+                //{
+                //    comandoBD_p.Parameters.AddWithValue("@cpf", Cpf);
+                //}
+                //if (!Nome.Equals(""))
+                //{
+                //    comandoBD_p.Parameters.AddWithValue("@nome", Nome);
+                //}
+                //if (!DataNascimento.Equals("  /  /"))
+                //{
+                //    //ajuste da data de nascimento para o padrão do MySQL
+                //    // TODO: utilizar formato date
+                //    dia = DataNascimento.Substring(0, 2);
+                //    mes = DataNascimento.Substring(3, 2);
+                //    ano = DataNascimento.Substring(6, 4);
+                //    DataNascimento = ano + "-" + mes + "-" + dia;
+                //    comandoBD_p.Parameters.AddWithValue("@data_nascimento", DataNascimento);
+                //}
+
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(comandoBD_p);
                 // executa o comando SQL
                 // ou poderia ser adapter.SelectCommand = comandoBD;
 
@@ -154,6 +159,14 @@ namespace cadastro_funcionario
             RunQuery(query.ToString());
         }
         //excluir
+        public void Excluir()
+        {
+            StringBuilder query = new StringBuilder("delete from funcionarios where matricula=@matricula");
+            RunQuery(query.ToString());
+        }
+
+
+        //atualizar
    
 
 

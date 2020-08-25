@@ -42,6 +42,18 @@ namespace cadastro_funcionario
             }
         }
 
+        private void btn_excluir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Excluir();
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+        }
+
         private void btn_limpar_Click(object sender, EventArgs e)
         {
             Limpar();
@@ -57,8 +69,11 @@ namespace cadastro_funcionario
                         
             funcionario.Matricula = matricula;
             funcionario.Cpf = txtbx_cpf.Text;
-            funcionario.Nome = txtbx_nome.Text;
+            funcionario.Nome = "%" + txtbx_nome.Text + "%";
+            // % adicionado no input do user pois ao ser adicionado os valores do objeto funcionario na query é passado o input entre aspas
             funcionario.DataNascimento = txtbx_dn.Text;
+            funcionario.Endereco = txtbx_endereco.Text;
+
 
             dataGridViewFuncionarios.DataSource = funcionario.Pesquisar();
         }
@@ -86,8 +101,32 @@ namespace cadastro_funcionario
                 funcionario.Salvar();
             }
 
+        }
 
+        private void Excluir()
+        {
+            Funcionario funcionario = new Funcionario();
 
+            int matricula = 0;
+            Int32.TryParse(txtbx_matricula.Text, out matricula);
+            // valida se a matrícula esta vazia ou não
+
+            if (matricula == 0)
+            {
+                MessageBox.Show("Escolha um funcionário para excluir", "Erro");
+
+            }
+            else
+            {
+                funcionario.Matricula = matricula;
+                funcionario.Cpf = txtbx_cpf.Text;
+                funcionario.Nome = txtbx_nome.Text;
+                funcionario.DataNascimento = txtbx_dn.Text;
+                funcionario.Endereco = txtbx_endereco.Text;
+                funcionario.Excluir();
+                Limpar();
+                funcionario.Pesquisar();
+            }
         }
 
         private void Limpar()
@@ -97,6 +136,15 @@ namespace cadastro_funcionario
             txtbx_nome.Text = "";
             txtbx_dn.Text = "";
             txtbx_endereco.Text = "";
+        }
+
+        private void dataGridViewFuncionarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            txtbx_matricula.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[0].Value.ToString();
+            txtbx_cpf.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[1].Value.ToString();
+            txtbx_nome.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[2].Value.ToString();
+            txtbx_dn.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[3].Value.ToString();
+            txtbx_endereco.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[4].Value.ToString();
         }
 
 

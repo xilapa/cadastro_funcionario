@@ -154,6 +154,7 @@
             this.btn_excluir.TabIndex = 3;
             this.btn_excluir.Text = "Excluir";
             this.btn_excluir.UseVisualStyleBackColor = true;
+            this.btn_excluir.Click += new System.EventHandler(this.btn_excluir_Click);
             // 
             // btn_salvar
             // 
@@ -183,6 +184,7 @@
             this.dataGridViewFuncionarios.Name = "dataGridViewFuncionarios";
             this.dataGridViewFuncionarios.Size = new System.Drawing.Size(764, 165);
             this.dataGridViewFuncionarios.TabIndex = 0;
+            this.dataGridViewFuncionarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewFuncionarios_CellContentClick);
             // 
             // txtbx_dn
             // 
