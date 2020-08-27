@@ -25,33 +25,38 @@ namespace cadastro_funcionario
         public void AddValues(ref MySqlCommand c, string _q)
         // método para substituir os parâmetros da query de forma segura, impedindo ataques por SQL Injection
         {
-            if ((Matricula != 0) && (_q.Contains("@matricula")))
+            try
             {
-                c.Parameters.AddWithValue("@matricula", Matricula);
+                if ((Matricula != 0) && (_q.Contains("@matricula")))
+                {
+                    c.Parameters.AddWithValue("@matricula", Matricula);
+                }
+                if ((!Cpf.Equals("")) && (_q.Contains("@cpf")))
+                {
+                    c.Parameters.AddWithValue("@cpf", Cpf);
+                }
+                if ((!Nome.Equals("")) && (_q.Contains("@nome")))
+                {
+                    c.Parameters.AddWithValue("@nome", Nome);
+                }
+                if ((!DataNascimento.Equals("  /  /")) && (_q.Contains("@data_nascimento")))
+                {
+                    //ajuste da data de nascimento para o padrão do MySQL
+                    dia = DataNascimento.Substring(0, 2);
+                    mes = DataNascimento.Substring(3, 2);
+                    ano = DataNascimento.Substring(6, 4);
+                    DataNascimento = ano + "-" + mes + "-" + dia;
+                    c.Parameters.AddWithValue("@data_nascimento", DataNascimento);
+                }
+                if ((!Endereco.Equals("")) && (_q.Contains("@endereco")))
+                {
+                    c.Parameters.AddWithValue("@endereco", Endereco);
+                }
             }
-            if ((!Cpf.Equals("")) && (_q.Contains("@cpf")))
+            catch (Exception e)
             {
-                c.Parameters.AddWithValue("@cpf", Cpf);
+                throw (e);
             }
-            if ((!Nome.Equals("")) && (_q.Contains("@nome")))
-            {
-                c.Parameters.AddWithValue("@nome", Nome);
-            }
-            if ((!DataNascimento.Equals("  /  /")) && (_q.Contains("@data_nascimento")))
-            {
-                //ajuste da data de nascimento para o padrão do MySQL
-                dia = DataNascimento.Substring(0, 2);
-                mes = DataNascimento.Substring(3, 2);
-                ano = DataNascimento.Substring(6, 4);
-                DataNascimento = ano + "-" + mes + "-" + dia;
-                c.Parameters.AddWithValue("@data_nascimento", DataNascimento);
-            }
-            if ((!Endereco.Equals("")) && (_q.Contains("@endereco")))
-            {
-                c.Parameters.AddWithValue("@endereco", Endereco);
-            }
-            
-            
 
         }
 
@@ -61,21 +66,22 @@ namespace cadastro_funcionario
             try
             {
                 MySqlConnection conexaoBD = new MySqlConnection(strConexaoBD);
-                MySqlCommand comandoBD = new MySqlCommand(q, conexaoBD);
-                //comandoBD.CommandText = q;
+                //cria a conexão com o banco de dados
 
-                conexaoBD.Open();
-                comandoBD.Prepare();
-                AddValues(ref comandoBD,q);
-                comandoBD.ExecuteNonQuery();
-                conexaoBD.Close();
+                MySqlCommand comandoBD = new MySqlCommand(q, conexaoBD);
+                //criação do comando SQL que será executado
+                //também poderia ser escrito como: comandoBD.CommandText = q; ao invés de passar a conexao na criação do comando
+
+                conexaoBD.Open(); //abre a conexão com o banco
+                comandoBD.Prepare(); //prepara a execução do comando
+                AddValues(ref comandoBD,q); //troca os valores da string query para os valores da classe 
+                comandoBD.ExecuteNonQuery(); //executa o comando
+                conexaoBD.Close(); //fecha a conexão com o banco
             }
             catch (Exception e)
             {
                 throw e;
             }
-
-
         }
 
         public DataTable Pesquisar()
@@ -84,7 +90,6 @@ namespace cadastro_funcionario
             try
             {
                 StringBuilder query = new StringBuilder("select matricula as Matrícula, cpf as CPF, nome as Nome, data_nascimento as 'Data de Nascimento', endereco as Endereço from funcionarios where 1");
-                // pq o where 1 no final?
                 // criando a query base que sera passada ao banco de dados
 
                 if (Matricula != 0)
@@ -112,37 +117,16 @@ namespace cadastro_funcionario
 
                 AddValues(ref comandoBD_p, query.ToString());
 
-                //if (Matricula != 0)
-                //{
-                //    comandoBD_p.Parameters.AddWithValue("@matricula", Matricula);
-                //}
-                //if (!Cpf.Equals(""))
-                //{
-                //    comandoBD_p.Parameters.AddWithValue("@cpf", Cpf);
-                //}
-                //if (!Nome.Equals(""))
-                //{
-                //    comandoBD_p.Parameters.AddWithValue("@nome", Nome);
-                //}
-                //if (!DataNascimento.Equals("  /  /"))
-                //{
-                //    //ajuste da data de nascimento para o padrão do MySQL
-                //    // TODO: utilizar formato date
-                //    dia = DataNascimento.Substring(0, 2);
-                //    mes = DataNascimento.Substring(3, 2);
-                //    ano = DataNascimento.Substring(6, 4);
-                //    DataNascimento = ano + "-" + mes + "-" + dia;
-                //    comandoBD_p.Parameters.AddWithValue("@data_nascimento", DataNascimento);
-                //}
-
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter(comandoBD_p);
-                // executa o comando SQL
-                // ou poderia ser adapter.SelectCommand = comandoBD;
+                // dataAdapter recebe os dados vindos do comando SQL
+                // tbm poderia ser escrito como: adapter.SelectCommand = comandoBD; ao invés de passar o comando na criação do dataAdapter
 
                 DataTable resultadoPesquisa = new DataTable();
-                // dataTable para receber os registros da consulta
+                // criação dataTable para receber os registros do comando SQL
+
                 dataAdapter.Fill(resultadoPesquisa);
                 // preenchimento do dataTable
+
                 return resultadoPesquisa;
             }
             catch (Exception e)
@@ -155,20 +139,46 @@ namespace cadastro_funcionario
         //salvar
         public void Salvar()
         {
-            StringBuilder query = new StringBuilder("insert into funcionarios(cpf,nome,data_nascimento,endereco) values (@cpf,@nome,@data_nascimento,@endereco);");
-            RunQuery(query.ToString());
+            try
+            {
+                StringBuilder query = new StringBuilder("insert into funcionarios(cpf,nome,data_nascimento,endereco) values (@cpf,@nome,@data_nascimento,@endereco);");
+                RunQuery(query.ToString());
+            }
+            catch (Exception e)
+            {
+                throw (e);
+            }
         }
+
+        ///atualizar
+        public void Atualizar()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder("update funcionarios set cpf=@cpf, nome=@nome,data_nascimento=@data_nascimento,endereco=@endereco where matricula=@matricula;");
+                RunQuery(query.ToString());
+            }
+            catch (Exception e)
+            {
+                throw (e);
+            }
+
+        }
+
         //excluir
         public void Excluir()
         {
-            StringBuilder query = new StringBuilder("delete from funcionarios where matricula=@matricula");
-            RunQuery(query.ToString());
+            try
+            {
+                StringBuilder query = new StringBuilder("delete from funcionarios where matricula=@matricula");
+                RunQuery(query.ToString());
+            }
+            catch (Exception e)
+            {
+                throw (e);
+            }
+
         }
-
-
-        //atualizar
-   
-
-
+         
     }
 }

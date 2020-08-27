@@ -37,13 +37,13 @@
             this.txtbx_matricula = new System.Windows.Forms.TextBox();
             this.txtbx_cpf = new System.Windows.Forms.TextBox();
             this.txtbx_nome = new System.Windows.Forms.TextBox();
-            this.txtbx_endereco = new System.Windows.Forms.TextBox();
-            this.btn_limpar = new System.Windows.Forms.Button();
-            this.btn_excluir = new System.Windows.Forms.Button();
-            this.btn_salvar = new System.Windows.Forms.Button();
-            this.btn_pesquisar = new System.Windows.Forms.Button();
-            this.dataGridViewFuncionarios = new System.Windows.Forms.DataGridView();
             this.txtbx_dn = new System.Windows.Forms.MaskedTextBox();
+            this.txtbx_endereco = new System.Windows.Forms.TextBox();
+            this.btn_pesquisar = new System.Windows.Forms.Button();
+            this.btn_salvar = new System.Windows.Forms.Button();
+            this.btn_excluir = new System.Windows.Forms.Button();
+            this.btn_limpar = new System.Windows.Forms.Button();
+            this.dataGridViewFuncionarios = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFuncionarios)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,13 +114,14 @@
             this.txtbx_matricula.ReadOnly = true;
             this.txtbx_matricula.Size = new System.Drawing.Size(100, 23);
             this.txtbx_matricula.TabIndex = 2;
+            this.txtbx_matricula.TabStop = false;
             // 
             // txtbx_cpf
             // 
             this.txtbx_cpf.Location = new System.Drawing.Point(220, 118);
             this.txtbx_cpf.Name = "txtbx_cpf";
             this.txtbx_cpf.Size = new System.Drawing.Size(100, 23);
-            this.txtbx_cpf.TabIndex = 2;
+            this.txtbx_cpf.TabIndex = 1;
             // 
             // txtbx_nome
             // 
@@ -129,42 +130,20 @@
             this.txtbx_nome.Size = new System.Drawing.Size(425, 23);
             this.txtbx_nome.TabIndex = 2;
             // 
+            // txtbx_dn
+            // 
+            this.txtbx_dn.Location = new System.Drawing.Point(220, 194);
+            this.txtbx_dn.Mask = "00/00/0000";
+            this.txtbx_dn.Name = "txtbx_dn";
+            this.txtbx_dn.Size = new System.Drawing.Size(100, 23);
+            this.txtbx_dn.TabIndex = 3;
+            // 
             // txtbx_endereco
             // 
             this.txtbx_endereco.Location = new System.Drawing.Point(220, 232);
             this.txtbx_endereco.Name = "txtbx_endereco";
             this.txtbx_endereco.Size = new System.Drawing.Size(425, 23);
-            this.txtbx_endereco.TabIndex = 2;
-            // 
-            // btn_limpar
-            // 
-            this.btn_limpar.Location = new System.Drawing.Point(663, 228);
-            this.btn_limpar.Name = "btn_limpar";
-            this.btn_limpar.Size = new System.Drawing.Size(125, 27);
-            this.btn_limpar.TabIndex = 3;
-            this.btn_limpar.Text = "Limpar";
-            this.btn_limpar.UseVisualStyleBackColor = true;
-            this.btn_limpar.Click += new System.EventHandler(this.btn_limpar_Click);
-            // 
-            // btn_excluir
-            // 
-            this.btn_excluir.Location = new System.Drawing.Point(663, 194);
-            this.btn_excluir.Name = "btn_excluir";
-            this.btn_excluir.Size = new System.Drawing.Size(125, 27);
-            this.btn_excluir.TabIndex = 3;
-            this.btn_excluir.Text = "Excluir";
-            this.btn_excluir.UseVisualStyleBackColor = true;
-            this.btn_excluir.Click += new System.EventHandler(this.btn_excluir_Click);
-            // 
-            // btn_salvar
-            // 
-            this.btn_salvar.Location = new System.Drawing.Point(663, 161);
-            this.btn_salvar.Name = "btn_salvar";
-            this.btn_salvar.Size = new System.Drawing.Size(125, 27);
-            this.btn_salvar.TabIndex = 3;
-            this.btn_salvar.Text = "Salvar";
-            this.btn_salvar.UseVisualStyleBackColor = true;
-            this.btn_salvar.Click += new System.EventHandler(this.btn_salvar_Click);
+            this.txtbx_endereco.TabIndex = 4;
             // 
             // btn_pesquisar
             // 
@@ -172,9 +151,43 @@
             this.btn_pesquisar.Name = "btn_pesquisar";
             this.btn_pesquisar.Size = new System.Drawing.Size(125, 27);
             this.btn_pesquisar.TabIndex = 3;
+            this.btn_pesquisar.TabStop = false;
             this.btn_pesquisar.Text = "Pesquisar";
             this.btn_pesquisar.UseVisualStyleBackColor = true;
             this.btn_pesquisar.Click += new System.EventHandler(this.btn_pesquisar_Click);
+            // 
+            // btn_salvar
+            // 
+            this.btn_salvar.Location = new System.Drawing.Point(663, 161);
+            this.btn_salvar.Name = "btn_salvar";
+            this.btn_salvar.Size = new System.Drawing.Size(125, 27);
+            this.btn_salvar.TabIndex = 3;
+            this.btn_salvar.TabStop = false;
+            this.btn_salvar.Text = "Salvar";
+            this.btn_salvar.UseVisualStyleBackColor = true;
+            this.btn_salvar.Click += new System.EventHandler(this.btn_salvar_Click);
+            // 
+            // btn_excluir
+            // 
+            this.btn_excluir.Location = new System.Drawing.Point(663, 194);
+            this.btn_excluir.Name = "btn_excluir";
+            this.btn_excluir.Size = new System.Drawing.Size(125, 27);
+            this.btn_excluir.TabIndex = 3;
+            this.btn_excluir.TabStop = false;
+            this.btn_excluir.Text = "Excluir";
+            this.btn_excluir.UseVisualStyleBackColor = true;
+            this.btn_excluir.Click += new System.EventHandler(this.btn_excluir_Click);
+            // 
+            // btn_limpar
+            // 
+            this.btn_limpar.Location = new System.Drawing.Point(663, 228);
+            this.btn_limpar.Name = "btn_limpar";
+            this.btn_limpar.Size = new System.Drawing.Size(125, 27);
+            this.btn_limpar.TabIndex = 3;
+            this.btn_limpar.TabStop = false;
+            this.btn_limpar.Text = "Limpar";
+            this.btn_limpar.UseVisualStyleBackColor = true;
+            this.btn_limpar.Click += new System.EventHandler(this.btn_limpar_Click);
             // 
             // dataGridViewFuncionarios
             // 
@@ -184,15 +197,8 @@
             this.dataGridViewFuncionarios.Name = "dataGridViewFuncionarios";
             this.dataGridViewFuncionarios.Size = new System.Drawing.Size(764, 165);
             this.dataGridViewFuncionarios.TabIndex = 0;
+            this.dataGridViewFuncionarios.TabStop = false;
             this.dataGridViewFuncionarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewFuncionarios_CellContentClick);
-            // 
-            // txtbx_dn
-            // 
-            this.txtbx_dn.Location = new System.Drawing.Point(220, 194);
-            this.txtbx_dn.Mask = "00/00/0000";
-            this.txtbx_dn.Name = "txtbx_dn";
-            this.txtbx_dn.Size = new System.Drawing.Size(100, 23);
-            this.txtbx_dn.TabIndex = 4;
             // 
             // cad_func
             // 

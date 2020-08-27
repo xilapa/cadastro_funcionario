@@ -15,6 +15,7 @@ namespace cadastro_funcionario
         public cad_func()
         {
             InitializeComponent();
+            Pesquisar();
         }
 
         private void btn_pesquisar_Click(object sender, EventArgs e)
@@ -34,7 +35,15 @@ namespace cadastro_funcionario
         {
             try
             {
-                Salvar();
+                if (String.IsNullOrEmpty(txtbx_matricula.Text))
+                {
+                    Salvar();
+                }
+                else
+                {
+                    Atualizar();
+                } 
+
             }
             catch (Exception err)
             {
@@ -70,7 +79,7 @@ namespace cadastro_funcionario
             funcionario.Matricula = matricula;
             funcionario.Cpf = txtbx_cpf.Text;
             funcionario.Nome = "%" + txtbx_nome.Text + "%";
-            // % adicionado no input do user pois ao ser adicionado os valores do objeto funcionario na query é passado o input entre aspas
+            // % adicionado no input do user pois ao ser adicionado os valores do objeto funcionario na query, é passado o input do formulário entre aspas
             funcionario.DataNascimento = txtbx_dn.Text;
             funcionario.Endereco = txtbx_endereco.Text;
 
@@ -102,6 +111,48 @@ namespace cadastro_funcionario
             }
 
         }
+
+        private void Atualizar()
+        {
+            Funcionario funcionario = new Funcionario();
+
+            int matricula = 0;
+            Int32.TryParse(txtbx_matricula.Text, out matricula);
+            // valida se a matrícula esta vazia ou não
+
+            if ((String.IsNullOrEmpty(txtbx_cpf.Text)) || (String.IsNullOrEmpty(txtbx_nome.Text)) || (String.IsNullOrEmpty(txtbx_dn.Text)) || (String.IsNullOrEmpty(txtbx_endereco.Text)))
+            {
+                MessageBox.Show("Preencha todos os campos", "Erro");
+
+            }
+            else
+            {
+                funcionario.Matricula = matricula;
+                funcionario.Cpf = txtbx_cpf.Text;
+                funcionario.Nome = txtbx_nome.Text;
+                funcionario.DataNascimento = txtbx_dn.Text;
+                funcionario.Endereco = txtbx_endereco.Text;
+                funcionario.Atualizar();
+            }
+
+        }
+
+        private void dataGridViewFuncionarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                txtbx_matricula.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[0].Value.ToString();
+                txtbx_cpf.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[1].Value.ToString();
+                txtbx_nome.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[2].Value.ToString();
+                txtbx_dn.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[3].Value.ToString();
+                txtbx_endereco.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[4].Value.ToString();
+            }
+            catch
+            {
+                //se o click for feito fora de um campo que tenha valor no dataGridView nada acontecerá
+            }
+        }
+
 
         private void Excluir()
         {
@@ -138,14 +189,6 @@ namespace cadastro_funcionario
             txtbx_endereco.Text = "";
         }
 
-        private void dataGridViewFuncionarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            txtbx_matricula.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[0].Value.ToString();
-            txtbx_cpf.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[1].Value.ToString();
-            txtbx_nome.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[2].Value.ToString();
-            txtbx_dn.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[3].Value.ToString();
-            txtbx_endereco.Text = dataGridViewFuncionarios.Rows[e.RowIndex].Cells[4].Value.ToString();
-        }
 
 
     }
